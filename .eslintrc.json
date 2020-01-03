@@ -1,0 +1,39 @@
+{
+	"parserOptions": {
+		"ecmaVersion": 2019,
+		"sourceType": "module",
+		"ecmaFeatures": {
+			"modules": true
+		}
+	},
+	"env": {
+		"browser": true,
+		"es6": true
+	},
+	"plugins": ["svelte3"],
+	"extends": ["eslint:recommended"],
+	"rules": {
+		"no-console": "off",
+		"no-var": "warn",
+		"eqeqeq": "warn",
+		"semi": ["warn", "always"],
+		"no-spaced-func": "warn",
+		"comma-style": "warn",
+		"comma-spacing": "warn",
+		"key-spacing": "warn"
+	},
+	"settings": {
+		"compiler": "babel",
+		"polyfills": [
+			"fetch",
+			"urlsearchparams",
+			"internationalization"
+		]
+	},
+	"overrides": [
+		{
+			"files": ["**/*.svelte"],
+			"processor": "svelte3/svelte3"
+		}
+	]
+}

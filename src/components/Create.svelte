@@ -1,4 +1,4 @@
-<h1>Create</h1>
+<h1>Create a new link</h1>
 
 <form on:submit={handleSubmit}>
 	<Flatpickr options={flatpickrOptions} bind:value={date} required />
@@ -7,6 +7,12 @@
 		Submit
 	</button>
 </form>
+
+<style>
+	form {
+		text-align: center;
+	}
+</style>
 
 <script>
 	import { navigate } from 'svelte-routing';

@@ -8,6 +8,13 @@
 	</main>
 </Router>
 
+<style>
+	nav {
+		display: flex;
+		justify-content: flex-end;
+	}
+</style>
+
 <script>
 	import { Router, Route, Link } from 'svelte-routing';
 	import Index from './Index.svelte';

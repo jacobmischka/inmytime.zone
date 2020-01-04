@@ -1,28 +1,33 @@
-{#if error}
-	<p>Sorry, there was a problem.</p>
-{:else if date && date.isValid}
-<date time={date.toISO()}>
-	{date.toLocaleString(DateTime.DATETIME_FULL)}
-</date>
-{:else if date}
-	<p>Sorry, looks like the date was invalid.</p>
-{:else}
-	<p>Hey!</p>
-{/if}
+<div>
+	{#if iso}
+		<Date iso={iso} />
+	{:else}
+		<p>Hello!</p>
+
+		<p>
+			Create a link to a time in your timezone,
+			and it will automatically be converted to
+			the local timezone of anyone who clicks on it.
+		</p>
+	{/if}
+</div>
+
+<style>
+	div {
+		text-align: center;
+	}
+</style>
 
 <script>
-	import { DateTime } from 'luxon';
+	import Date from './Date.svelte';
 
-	let date, error;
+
+	let iso;
 
 	try {
 		const params = new URLSearchParams(window.location.search);
-		const iso = params.get('iso');
-		if (iso) {
-			date = DateTime.fromISO(iso).setZone('local');
-		}
+		iso = params.get('iso');
 	} catch (e) {
 		console.error(e);
-		error = e;
 	}
 </script>

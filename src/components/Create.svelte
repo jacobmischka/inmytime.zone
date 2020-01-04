@@ -1,7 +1,10 @@
-<h1>Create a new link</h1>
-
 <form on:submit={handleSubmit}>
-	<Flatpickr options={flatpickrOptions} bind:value={date} required />
+	<h2>Create a new link</h2>
+
+	<label>
+		Date and time
+		<Flatpickr options={flatpickrOptions} bind:value={date} required />
+	</label>
 
 	<button type="submit">
 		Submit
@@ -10,18 +13,17 @@
 
 <style>
 	form {
-		text-align: center;
 	}
 </style>
 
 <script>
-	import { navigate } from 'svelte-routing';
 	import Flatpickr from 'svelte-flatpickr';
 
 	let date = '';
 
 	const flatpickrOptions = {
-		enableTime: true
+		enableTime: true,
+		dateFormat: 'F j, Y h:i K'
 	};
 
 	function handleSubmit(event) {
@@ -30,7 +32,8 @@
 		if (date) {
 			const params = new URLSearchParams();
 			params.set('iso', date.toISOString());
-			navigate(`/?${params.toString()}`);
+			window.history.pushState(null, null, `/?${params.toString()}`);
+			window.dispatchEvent(new Event('popstate'));
 		} else {
 			alert('Enter a date');
 		}

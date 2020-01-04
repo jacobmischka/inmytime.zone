@@ -1948,11 +1948,6 @@ svelte-flatpickr@^2.3.1:
   dependencies:
     flatpickr "^4.5.2"
 
-svelte-routing@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/svelte-routing/-/svelte-routing-1.4.0.tgz#09285f3c7b19f509dfb1289fbc1235b348aa7d80"
-  integrity sha512-09ypn0/vD2PcuyZEEocUHFgi7kvLOxSoUUuJZ4j3p4Y4sT/kMIWtHIRpnLdsr8bQ+sGo77sbEkO+av6yd1RjPg==
-
 svelte@^3.0.0:
   version "3.16.7"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.16.7.tgz#9ade80a4bbbac95595c676dd817222f632fa2c07"

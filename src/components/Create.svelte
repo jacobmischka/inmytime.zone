@@ -32,7 +32,7 @@
 		defaultMinute = now.getMinutes() + MINUTE_ROUND_TIME;
 		defaultMinute -= defaultMinute % MINUTE_ROUND_TIME;
 
-		if (defaultMinute > 60) {
+		if (defaultMinute >= 60) {
 			defaultMinute -= 60;
 			defaultHour += 1;
 		}

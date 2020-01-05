@@ -13,8 +13,6 @@
 		<Date date={date} />
 	{:else}
 		<div>
-			<p>Hello!</p>
-
 			<p>
 				Create a link to a time in your timezone,
 				and it will automatically be converted to
@@ -28,8 +26,9 @@
 	{#if !date}
 		<aside>
 			<p>
-				Tip: type variations of the following into your address bar
-				to easily create full links that you can send to others:
+				<b>Tip:</b>
+				type variations of the following into your address bar
+				to easily create full links that you can send to others
 			</p>
 
 			<ul>
@@ -42,6 +41,8 @@
 		</aside>
 	{/if}
 </main>
+
+<Footer />
 
 <svelte:window on:popstate={getDate} />
 
@@ -76,6 +77,7 @@
 
 	import Date from './Date.svelte';
 	import Create from './Create.svelte';
+	import Footer from './Footer.svelte';
 
 	const subRe = /(\d+)(am|pm|AM|PM)?/;
 

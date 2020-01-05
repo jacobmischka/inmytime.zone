@@ -134,18 +134,27 @@
 					minute = Number(time.substring(i));
 				}
 
-				if (matches.length > 2 && matches[2]) {
-					const ampm = matches[2].toLowerCase();
-					if (hour < 12 && ampm === 'pm') {
-						hour += 12;
-					} else if (hour === 12 && ampm === 'am') {
-						hour = 0;
-					}
+				if (hour === 12) {
+					hour = 0;
 				}
 
-				const d = DateTime.local().set({ hour, minute });
+				let ampm;
+
+				if (matches.length > 2 && matches[2]) {
+					ampm = matches[2].toLowerCase();
+				}
+
+				if (ampm === 'pm') {
+					hour += 12;
+				}
+
+				let d = DateTime.local().set({ hour, minute });
+
+				if (!ampm && d < DateTime.local()) {
+					d = d.plus({ hours: 12 });
+				}
+
 				const domain = origin.replace(`${subdomain}.`, '');
-				console.log(domain);
 				const params = new URLSearchParams();
 				params.set('iso', d.toISO());
 				window.location =  `${domain}?${params.toString()}`;

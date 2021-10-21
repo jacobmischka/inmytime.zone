@@ -1,7 +1,7 @@
 <section class="date">
 	{#if date && date.isValid}
 		<date time={date.toISO()}>
-			{date.toLocaleString(DateTime.DATETIME_FULL)}
+			{date.toLocaleString(format)}
 		</date>
 		<DateComparedToNow date={date} />
 	{:else}
@@ -26,4 +26,8 @@
 	import DateComparedToNow from './DateComparedToNow.svelte';
 
 	export let date;
+	export let timeOnly = false;
+
+	let format;
+	$: format = timeOnly ? DateTime.TIME_SIMPLE : DateTime.DATETIME_FULL;
 </script>

@@ -10,7 +10,7 @@
 
 <main>
 	{#if date}
-		<Date date={date} />
+		<Date {date} {timeOnly} />
 	{:else}
 		<div>
 			<p>
@@ -90,11 +90,20 @@
 
 
 	let date;
+	let timeOnly = false;
 
 
 	const hasSubdomain = (
-		window.location.hostname.indexOf('.')
-		!== window.location.hostname.lastIndexOf('.')
+		window.location.hostname.includes('.')
+		&& (
+			(
+				window.location.hostname.indexOf('.')
+				!== window.location.hostname.lastIndexOf('.')
+			)
+			|| (
+				window.location.hostname.substring(window.location.hostname.indexOf('.') + 1) === 'localhost'
+			)
+		)
 	);
 
 	if (hasSubdomain) {
@@ -107,9 +116,20 @@
 	function getDate() {
 		try {
 			const params = new URLSearchParams(window.location.search);
-			let iso = params.get('iso');
+			const iso = params.get('iso');
 			if (iso) {
+				timeOnly = false;
 				date = DateTime.fromISO(iso).setZone('local');
+				return;
+			}
+
+			const time = params.get('time');
+			const zone = params.get('zone');
+
+			if (zone && time) {
+				const [hours, minutes] = decodeURIComponent(time).split(':').map(val => parseInt(val, 10));
+				timeOnly = true;
+				date = DateTime.fromObject({ hours, minutes }, { zone: decodeURIComponent(zone) }).toLocal();
 			}
 		} catch (e) {
 			console.error(e);
@@ -148,15 +168,16 @@
 					hour += 12;
 				}
 
-				let d = DateTime.local().set({ hour, minute });
+				let dt = DateTime.local().set({ hour, minute });
 
-				if (!ampm && d < DateTime.local()) {
-					d = d.plus({ hours: 12 });
+				if (!ampm && dt < DateTime.local()) {
+					dt = dt.plus({ hours: 12 });
 				}
 
 				const domain = origin.replace(`${subdomain}.`, '');
 				const params = new URLSearchParams();
-				params.set('iso', d.toISO());
+				params.set('zone', dt.zoneName);
+				params.set('time', dt.toFormat('HH:mm'));
 				window.location =  `${domain}?${params.toString()}`;
 			}
 		} catch (e) {

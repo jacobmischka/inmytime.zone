@@ -1,28 +1,50 @@
 <form on:submit={handleSubmit}>
 	<h2>Create a new link</h2>
 
-	<label>
-		Date and time
-		<Flatpickr options={flatpickrOptions} bind:value={date} required />
-	</label>
+	<div>
+		<label>
+			{#if timeOnly}
+				Time
+			{:else}
+				Date and time
+			{/if}
 
-	<button type="submit">
-		Submit
-	</button>
+			{#key options}
+			<Flatpickr {options} bind:value={date} required />
+			{/key}
+		</label>
+
+		<button type="submit">
+			Submit
+		</button>
+	</div>
+
+	<div>
+		<label>
+			<input type="checkbox" bind:checked={timeOnly} />
+			Time only
+		</label>
+	</div>
 </form>
 
 <style>
 	h2 {
 		font-size: 1.25em;
 	}
+
+	input {
+		display: inline-block;
+	}
 </style>
 
 <script>
 	import Flatpickr from 'svelte-flatpickr';
+	import { DateTime } from 'luxon';
 
 	const MINUTE_ROUND_TIME = 15;
 
 	let date = '';
+	let timeOnly = true;
 
 	let defaultHour, defaultMinute;
 
@@ -47,9 +69,11 @@
 
 
 
-	const flatpickrOptions = {
+	let options;
+	$: options = {
 		enableTime: true,
-		dateFormat: 'F j, Y h:i K',
+		noCalendar: timeOnly,
+		dateFormat: timeOnly ? 'h:i K' : 'F j, Y h:i K',
 		defaultHour,
 		defaultMinute,
 	};
@@ -59,7 +83,13 @@
 
 		if (date) {
 			const params = new URLSearchParams();
-			params.set('iso', date.toISOString());
+			if (timeOnly) {
+				const dt = DateTime.fromJSDate(date);
+				params.set('time', dt.toFormat('HH:mm'));
+				params.set('zone', dt.zoneName);
+			} else {
+				params.set('iso', date.toISOString());
+			}
 			window.history.pushState(null, null, `/?${params.toString()}`);
 			window.dispatchEvent(new Event('popstate'));
 		} else {

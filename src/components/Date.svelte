@@ -29,5 +29,9 @@
 	export let timeOnly = false;
 
 	let format;
-	$: format = timeOnly ? DateTime.TIME_SIMPLE : DateTime.DATETIME_FULL;
+	$: format = timeOnly ? {
+		hour: 'numeric',
+		minute: 'numeric',
+		timeZoneName: 'short'
+	} : DateTime.DATETIME_FULL;
 </script>
